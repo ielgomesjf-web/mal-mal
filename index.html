@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mal-mal!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ============ TELA INICIAL ============ -->
+  <section id="start" class="screen">
+    <div class="start-box">
+      <div class="logo">Mal-mal!<span class="logo-devil">😈</span></div>
+      <div class="row2">
+        <label class="field">
+          <span>Seu nome</span>
+          <input id="opt-name" maxlength="14" value="Você" />
+        </label>
+        <div class="field">
+          <span>Modo</span>
+          <div class="seg" id="opt-mode">
+            <button data-v="normal" class="on">Normal</button><button data-v="chaos">Caótico 🌪</button>
+          </div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <span>Adversários</span>
+          <div class="seg" id="opt-opponents">
+            <button data-v="1">1</button><button data-v="2">2</button><button data-v="3" class="on">3</button>
+          </div>
+        </div>
+        <div class="field" id="field-target">
+          <span>Pontos pra vencer</span>
+          <div class="seg" id="opt-target">
+            <button data-v="100">100</button><button data-v="250" class="on">250</button><button data-v="500">500</button>
+          </div>
+        </div>
+        <div class="field hidden" id="field-chaos">
+          <span>Batidas pra acabar</span>
+          <div class="seg" id="opt-chaos">
+            <button data-v="3">3</button><button data-v="5" class="on">5</button><button data-v="10">10</button>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <span>Dificuldade</span>
+        <div class="seg" id="opt-level">
+          <button data-v="easy">Fácil</button><button data-v="medium" class="on">Médio</button><button data-v="hard">Difícil</button><button data-v="evil" class="evil">Mal-mal 😈</button>
+        </div>
+        <p id="level-help" class="mode-help"></p>
+      </div>
+      <p id="chaos-help" class="mode-help hidden">🌪 Zerou a mão? Compra 7 e continua! O jogo acaba depois das batidas de todo mundo somadas — ganha quem bateu mais vezes.</p>
+      <button id="btn-house" class="house-btn">
+        <span>Regras da casa ⚙</span>
+        <span id="house-count"></span>
+      </button>
+      <button id="btn-play" class="big">Jogar</button>
+      <div class="row2 btn-row">
+        <button id="btn-online" class="big online">Jogar online 🌐</button>
+        <button id="btn-training" class="big alt">Modo treino 🎓</button>
+      </div>
+      <button id="btn-rules" class="link">Como jogar</button>
+    </div>
+  </section>
+
+  <!-- ============ MODO TREINO ============ -->
+  <section id="training" class="screen hidden">
+    <div class="train-box">
+      <div class="train-head">
+        <button id="btn-train-back" class="icon" title="Voltar">←</button>
+        <h1>Modo treino 🎓</h1>
+        <span id="train-count"></span>
+      </div>
+      <p class="train-intro">🦉 A Coruja vai te ensinar, nível por nível. Complete uma lição pra abrir a próxima!</p>
+      <div id="train-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ ONLINE ============ -->
+  <section id="online" class="screen hidden">
+    <div class="train-box">
+      <div class="train-head">
+        <button id="btn-online-back" class="icon" title="Voltar">←</button>
+        <h1>Jogar online 🌐</h1>
+      </div>
+      <div id="online-home" class="online-card">
+        <p class="train-intro">Jogue com amigos em outros celulares e computadores! Um cria a sala, os outros entram com o código.</p>
+        <label class="field">
+          <span>Seu nome</span>
+          <input id="online-name" maxlength="14" placeholder="Como te chamam?" />
+        </label>
+        <button id="btn-create" class="big">Criar sala</button>
+        <div class="join-row">
+          <input id="join-code" maxlength="4" placeholder="CÓDIGO" autocomplete="off" />
+          <button id="btn-join" class="big alt">Entrar</button>
+        </div>
+      </div>
+      <div id="online-lobby" class="online-card hidden">
+        <div class="room-code">
+          <span>Código da sala</span>
+          <b id="room-code"></b>
+          <button id="btn-copy-link" class="link">Copiar link da sala</button>
+        </div>
+        <ol id="seat-list"></ol>
+        <p id="lobby-summary" class="mode-help"></p>
+        <div id="host-controls">
+          <button id="btn-add-bot" class="house-btn">+ Colocar um bot</button>
+          <button id="btn-online-start" class="big">Começar</button>
+          <p class="mode-help">O modo, a dificuldade dos bots e as regras vêm da tela inicial (escolha antes de criar a sala).</p>
+        </div>
+        <p id="guest-wait" class="train-intro hidden">Esperando o anfitrião começar… ⏳</p>
+      </div>
+      <p id="online-status" class="online-status"></p>
+    </div>
+  </section>
+
+  <!-- ============ MESA ============ -->
+  <main id="table" class="screen hidden">
+    <header class="topbar">
+      <button id="btn-quit" class="icon" title="Sair">✕</button>
+      <span id="round-label">Rodada 1</span>
+      <span class="topbar-right">
+        <button id="btn-rules-game" class="icon" title="Regras">?</button>
+        <button id="btn-sound" class="icon" title="Som">🔊</button>
+      </span>
+    </header>
+
+    <div id="slot-top" class="slot"></div>
+    <div id="slot-left" class="slot"></div>
+    <div id="slot-right" class="slot"></div>
+
+    <div id="center">
+      <div id="ring"></div>
+      <div id="dir">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <path d="M50 4 A46 46 0 0 1 96 50" marker-end="url(#arrow)" />
+          <path d="M50 96 A46 46 0 0 1 4 50" marker-end="url(#arrow)" />
+        </svg>
+      </div>
+      <div class="piles">
+        <div id="deck" title="Comprar carta">
+          <div class="card back"><div class="face"><span class="oval"><span class="sym">MAL<br>MAL</span></span></div></div>
+          <span id="pending" class="hidden"></span>
+        </div>
+        <div id="discard"></div>
+      </div>
+      <div id="status"></div>
+    </div>
+
+    <div id="coach" class="hidden">
+      <span class="coach-avatar">🦉</span>
+      <div class="coach-body">
+        <span class="coach-name">Coruja</span>
+        <span id="coach-text"></span>
+      </div>
+      <button id="coach-next" class="hidden">Continuar ▸</button>
+    </div>
+
+    <section id="me">
+      <div class="me-bar">
+        <span id="me-name"></span>
+        <span id="me-score"></span>
+        <button id="btn-pass" class="hidden">Passar</button>
+        <button id="btn-uno" class="hidden">UNO!</button>
+      </div>
+      <div id="tray" class="hidden">
+        <span class="tray-hint">Arraste cartas do <b>mesmo número</b> pra cá</span>
+        <div class="tray-cards"></div>
+        <button id="btn-tray-play" class="hidden">Jogar pilha</button>
+        <button id="btn-tray-clear" class="hidden" title="Desfazer pilha">✕</button>
+      </div>
+      <div id="hand"></div>
+    </section>
+
+    <button id="btn-catch" class="hidden">Pegou! 🫵</button>
+    <div id="toasts"></div>
+  </main>
+
+  <!-- ============ JANELAS ============ -->
+  <div id="modal-color" class="modal hidden">
+    <div class="modal-box">
+      <h2>Escolha a cor</h2>
+      <div class="colors">
+        <button data-color="red" class="swatch red"></button>
+        <button data-color="yellow" class="swatch yellow"></button>
+        <button data-color="green" class="swatch green"></button>
+        <button data-color="blue" class="swatch blue"></button>
+      </div>
+      <button class="link" data-color="">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="modal-swap" class="modal hidden">
+    <div class="modal-box">
+      <h2>Trocar de mão?</h2>
+      <p class="sub">Você jogou 1 — pode trocar sua mão com alguém.</p>
+      <div id="swap-options" class="swap-options"></div>
+      <button class="link" data-swap="">Não trocar</button>
+    </div>
+  </div>
+
+  <div id="modal-round" class="modal hidden">
+    <div class="modal-box">
+      <h2 id="round-title"></h2>
+      <p id="round-points"></p>
+      <ol id="scoreboard"></ol>
+      <button id="btn-next" class="big"></button>
+    </div>
+  </div>
+
+  <div id="modal-house" class="modal hidden">
+    <div class="modal-box house-box">
+      <h2>Regras da casa</h2>
+      <div id="opt-rules" class="rule-list"></div>
+      <button class="big" data-close>Pronto</button>
+    </div>
+  </div>
+
+  <div id="modal-lesson" class="modal hidden">
+    <div class="modal-box">
+      <h2 id="lesson-title"></h2>
+      <p id="lesson-text"></p>
+      <button id="btn-lesson-next" class="big">Próxima lição ▸</button>
+      <button id="btn-lesson-retry" class="big">Tentar de novo</button>
+      <button id="btn-lesson-menu" class="link">Voltar pro menu do treino</button>
+    </div>
+  </div>
+
+  <div id="modal-rules" class="modal hidden">
+    <div class="modal-box rules">
+      <h2>Como jogar</h2>
+      <ul>
+        <li>Jogue uma carta da <b>mesma cor</b> ou do <b>mesmo número/símbolo</b> da carta da mesa.</li>
+        <li>Não tem jogada? Clique no <b>monte</b> pra comprar. Se a carta servir, pode jogar — ou passar.</li>
+        <li><b>⊘ Bloqueio</b>: o próximo perde a vez. <b>⇄ Inverter</b>: muda o sentido. <b>+2</b>: o próximo compra 2 e perde a vez.</li>
+        <li><b>Coringa</b>: escolhe a cor. <b>+4</b>: escolhe a cor e o próximo compra 4 — só vale se você não tiver a cor da mesa.</li>
+        <li>Ficou com 1 carta? Aperte <b>UNO!</b> (dá pra apertar antes de jogar a penúltima). Se esquecer e alguém pegar, compra 2.</li>
+        <li>Viu um bot esquecer o UNO? Aperte <b>Pegou!</b> antes do próximo jogar.</li>
+        <li>Quem zera a mão ganha os pontos das cartas dos outros: número vale o número, especiais 20, coringas 50.</li>
+        <li><b>Modo Caótico 🌪</b>: zerou a mão, compra 7 e o jogo continua! Depois de 5 batidas (somando todo mundo) acaba, e ganha quem bateu mais vezes. Empate: quem tiver menos cartas.</li>
+      </ul>
+      <h3>Regras da casa</h3>
+      <ul id="rules-house"></ul>
+      <button class="big" data-close>Entendi</button>
+    </div>
+  </div>
+
+  <script src="uno.js"></script>
+  <script src="sala.js"></script>
+  <script src="treino.js"></script>
+  <script src="ui.js"></script>
+  <script src="treino-ui.js"></script>
+  <script src="rede.js"></script>
+</body>
+</html>
